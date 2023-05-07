@@ -3,15 +3,28 @@ import './AgentForm.css';
 import axios from '../../../axios';
 import ImageCropper from './ImageCropper';
 
-const upload = async (file, event, itemID, setType, setDisplayDashboard) => {
-    console.log(file);
+const upload = async (file1, file2, file3, event, itemID, setType, setDisplayDashboard) => {
+    console.log(file1);
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', file1);
     formData.append('itemID', itemID);
     event.preventDefault();
     const response = await axios.post('/collector/itemCollect',formData);
     await setType("");
     if(response.status == 200){
+        console.log(response);
+        if(file2){
+            const formData = new FormData();
+            formData.append('file', file2);
+            formData.append('itemID',itemID);
+            const response2 = await axios.post('/collector/itemCollect',formData);
+        }
+        if(file3){
+            const formData = new FormData();
+            formData.append('file', file3);
+            formData.append('itemID',itemID);
+            const response3 = await axios.post('/collector/itemCollect',formData);
+        }
         await setDisplayDashboard(true);
         alert('Item Status Updated!');
     }
@@ -27,16 +40,32 @@ const PickUpForm = (props) => {
         itemID: props.itemID,
         file:null
     });
+
     const [file, setFile] = useState(null);
+    const [file1,setFile1] = useState(null);
+    const [file2,setFile2] = useState(null);
+    const [file3,setFile3] = useState(null);
+    const [uploadCnt, setUploadCnt] = useState(0);
 
 
-    const handleInput = (e) => {
-        //e.preventDefault();
-        const name = e.target.name;
-        const value = e.target.value;
-        setUserInput({...userInput, [name] : value});
-        // console.log(props);
-        // props.setDisplayDashboard(true);
+    // const handleInput = (e) => {
+    //     //e.preventDefault();
+    //     const name = e.target.name;
+    //     const value = e.target.value;
+    //     setUserInput({...userInput, [name] : value});
+    //     // console.log(props);
+    //     // props.setDisplayDashboard(true);
+    // }
+
+    const handleUpload = (e) => {
+        e.preventDefault();
+        if(uploadCnt>2)
+            return;
+        if(file1 == null || (uploadCnt == 1 && file2 == null) || (uploadCnt == 2 && file3 == null)){
+            alert('Please Select file!');
+            return;
+        }
+        setUploadCnt(uploadCnt+1);
     }
 
     return(
@@ -57,15 +86,19 @@ const PickUpForm = (props) => {
 
                 <div class="form-wrap">
                     <div class="form-item">
-                        <label>Please upload the condition of item</label>
-                        <ImageCropper uploadFile={image => {setFile(image)}}/>
+                        <label>Please upload the condition of item(Max. 3)</label>
+                        <button className='upload-count'>{uploadCnt}</button><span>{'  '}</span>
+                        <button className='upload-button' onClick={(e)=>handleUpload(e)}>Upload</button>
+                        {uploadCnt==0&&<ImageCropper uploadFile={image => {setFile1(image)}} />}
+                        {uploadCnt==1&&<ImageCropper uploadFile={image => {setFile2(image)}} />}
+                        {uploadCnt==2&&<ImageCropper uploadFile={image => {setFile3(image)}} />}
                    </div>
                 </div>
                 
                 <br/>
 
                 <div class="btn">
-                    <input type="submit" value="Submit Request" onClick={(event) => upload(file, event, userInput.itemID, props.setType, props.setDisplayDashboard)}/>
+                    <input type="submit" value="Submit Request" onClick={(event) => upload(file1, file2, file3, event, userInput.itemID, props.setType, props.setDisplayDashboard)}/>
                 </div>
 
             </div>

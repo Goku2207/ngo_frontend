@@ -22,13 +22,13 @@ const upload = async (file1, file2, file3, event, userInput, donorID, setDisplay
             const formData = new FormData();
             formData.append('file', file2);
             formData.append('itemID',id);
-            const response2 = await axios.post('items/addImage',formData);
+            const response2 = await axios.post('/items/addImage',formData);
         }
         if(file3){
             const formData = new FormData();
             formData.append('file', file3);
             formData.append('itemID',id);
-            const response3 = await axios.post('items/addImage',formData);
+            const response3 = await axios.post('/items/addImage',formData);
         }
         alert('Item Added Successfully!');
     }
