@@ -2,9 +2,15 @@ import React, { useState } from 'react';
 import './AgentForm.css';
 import axios from '../../../axios';
 import ImageCropper from './ImageCropper';
+import Spinner from '../../Utility/Spinner';
 
-const upload = async (file1, file2, file3, event, itemID, setType, setDisplayDashboard) => {
+const upload = async (file1, file2, file3, event, itemID, setType, setDisplayDashboard, setLoading) => {
+    if(file1==null){
+        alert('Please upload atleast 1 image!');
+        return;
+    }
     console.log(file1);
+    setLoading(true);
     const formData = new FormData();
     formData.append('file', file1);
     formData.append('itemID', itemID);
@@ -25,10 +31,12 @@ const upload = async (file1, file2, file3, event, itemID, setType, setDisplayDas
             formData.append('itemID',itemID);
             const response3 = await axios.post('/collector/itemCollect',formData);
         }
+        setLoading(false);
         await setDisplayDashboard(true);
         alert('Item Status Updated!');
     }
     else{
+        setLoading(false);
         alert(response.message);
     }
     
@@ -46,6 +54,7 @@ const PickUpForm = (props) => {
     const [file2,setFile2] = useState(null);
     const [file3,setFile3] = useState(null);
     const [uploadCnt, setUploadCnt] = useState(0);
+    const [loading, setLoading] = useState(false);
 
 
     // const handleInput = (e) => {
@@ -70,6 +79,7 @@ const PickUpForm = (props) => {
 
     return(
         <>
+        {loading && <Spinner/>}
             <div class="wrapper">
         <div class="form-container">
             <div class="form">
@@ -98,7 +108,7 @@ const PickUpForm = (props) => {
                 <br/>
 
                 <div class="btn">
-                    <input type="submit" value="Submit Request" onClick={(event) => upload(file1, file2, file3, event, userInput.itemID, props.setType, props.setDisplayDashboard)}/>
+                    <input type="submit" value="Submit Request" onClick={(event) => upload(file1, file2, file3, event, userInput.itemID, props.setType, props.setDisplayDashboard, setLoading)}/>
                 </div>
 
             </div>

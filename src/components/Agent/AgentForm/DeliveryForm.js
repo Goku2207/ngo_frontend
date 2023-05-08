@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './AgentForm.css';
 import axios from '../../../axios';
+import Spinner from '../../Utility/Spinner';
 
 const DeliveryForm = (props) => {
 
@@ -11,6 +12,7 @@ const DeliveryForm = (props) => {
         mobile:"",
         address:""
     });
+    const [loading, setLoading] = useState(false);
 
     const handleInput = (e) => {
         //e.preventDefault();
@@ -27,7 +29,9 @@ const DeliveryForm = (props) => {
             alert('Please fill all the fields');
             return;
         }
+        setLoading(true);
         const response = await axios.post('/collector/itemDeliver',userInput);
+        setLoading(false);
         props.setType("");
         if(response.status == 200){
             props.setDisplayDashboard(true);
@@ -39,6 +43,7 @@ const DeliveryForm = (props) => {
 
     return(
         <>
+        {loading && <Spinner/>}
             <div class="wrapper">
         <div class="form-container">
             <div class="form">

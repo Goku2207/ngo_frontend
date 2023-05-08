@@ -13,6 +13,7 @@ import Donors from './Donors';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../../store/context/auth';
 import { logout } from '../../Auth/Utility';
+import Spinner from '../../Utility/Spinner';
 
 const AdminDashboard = (props) => {
     
@@ -23,9 +24,11 @@ const AdminDashboard = (props) => {
     const [agentRequest, setAgentRequests] = useState([]);
     const [tabView, setTabView] = useState("Admin");
     const [stats, setStats] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(async () => {
+            setLoading(true);
             const response = await axios.get('/donator/size');
             setStats(response.data.sizes);
             //console.log(response);
@@ -35,13 +38,16 @@ const AdminDashboard = (props) => {
             const resAgentRequests = await axios.post('/admin/requests',{page:1,limit:100});
             //console.log(resAgentRequests);
             setAgentRequests(resAgentRequests.data.allRequests);
+            setLoading(false);
         },500);
         return () => {clearTimeout(timer);};
     }, [updateComponent]);
 
     const handleApproval = async (e, agentID, approval) =>{
         e.preventDefault();
+        setLoading(true);
         const response = await axios.post('/admin/approval',{_id: agentID, approval:approval});
+        setLoading(false);
         if(response.status == 200){
             setUpdateComponent(prevState=>{
                 return !prevState;
@@ -62,10 +68,7 @@ const AdminDashboard = (props) => {
         navigate("/home");
     }
 
-    const [donorNumber,setDonorNumber] = useState("1023");
-    const [donationNumber,setDonationNumber] = useState("2023");
     const [regionCount,setRegionCount] = useState("4");
-    const [volunteerCount,setVolunteerCount] = useState("23");
 
     return(
         <>
@@ -139,6 +142,7 @@ const AdminDashboard = (props) => {
                 </div>
             </div>
             <div class="content-2">
+                {loading && <Spinner/>}
                 {tabView=='Admin'&&
                     <DonatedItems donatedItems={donatedItems} setUpdateComponent={setUpdateComponent}/>}
                 {tabView=='Agent'&&

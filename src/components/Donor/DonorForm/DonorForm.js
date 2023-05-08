@@ -3,9 +3,19 @@ import './DonorForm.css';
 import ImageCropper from '../../Agent/AgentForm/ImageCropper';
 import axios from '../../../axios';
 import { Button } from 'reactstrap';
+import Spinner from '../../Utility/Spinner';
 
-const upload = async (file1, file2, file3, event, userInput, donorID, setDisplayDashboard) => {
+const upload = async (file1, file2, file3, event, userInput, donorID, setDisplayDashboard, setLoading) => {
     console.log(donorID);
+    if(userInput.itemName=="" || userInput.address==""){
+        alert('Please fill all the details!');
+        return;
+    }
+    if(file1==null){
+        alert('Please upload at least 1 image!');
+        return;
+    }
+    setLoading(true);
     const formData = new FormData();
     formData.append('file', file1);
     formData.append('donID', donorID);
@@ -30,9 +40,11 @@ const upload = async (file1, file2, file3, event, userInput, donorID, setDisplay
             formData.append('itemID',id);
             const response3 = await axios.post('/items/addImage',formData);
         }
+        setLoading(false);
         alert('Item Added Successfully!');
     }
     else{
+        setLoading(false);
         alert(response.data.message);
     }
     await setDisplayDashboard(true);
@@ -54,6 +66,7 @@ const DonorForm = (props) => {
     const [file2,setFile2] = useState(null);
     const [file3,setFile3] = useState(null);
     const [uploadCnt, setUploadCnt] = useState(0);
+    const [loading, setLoading] = useState(false);
 
     const handleInput = (e) => {
         const name = e.target.name;
@@ -76,6 +89,7 @@ const DonorForm = (props) => {
 
     return(
         <>
+        {loading && <Spinner/>}
             <div class="wrapper">
         <div class="form-container">
             <div class="form">
@@ -147,7 +161,7 @@ const DonorForm = (props) => {
                 <br/>
 
                 <div class="btn">
-                    <input type="submit" value="Submit Request" onClick={(event) => upload(file1, file2, file3, event,userInput,props.donorID , props.setDisplayDashboard)}/>
+                    <input type="submit" value="Submit Request" onClick={(event) => upload(file1, file2, file3, event,userInput,props.donorID , props.setDisplayDashboard, setLoading)}/>
                 </div>
 
             </div>

@@ -1,21 +1,26 @@
 import React, {useState,useEffect} from "react";
 import axios from "../../../axios";
 import './AdminDashboard.css';
+import Spinner from "../../Utility/Spinner";
 
 const Donors = (props) => {
 
     const [donorsData, setDonorsData] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const timer = setTimeout(async () => {
             const response = await axios.post('/donator/',{});
             console.log(response);
+            setLoading(false);
             setDonorsData(response.data.allDonators);
         },500);
         return () => {clearTimeout(timer);};
     }, []);
 
     return(
+        <>
+        {loading && <Spinner/>}
         <div class="recent-payments">
                 <div class="title">
                     <h2>Donors' Details</h2>
@@ -44,6 +49,7 @@ const Donors = (props) => {
                     
                 </table>
                 </div>
+                </>
     );
 }
 

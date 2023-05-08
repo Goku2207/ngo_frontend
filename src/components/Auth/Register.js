@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './Register.css';
 import axios from '../../axios';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../Utility/Spinner';
 
 const Register = () => {
 
@@ -20,6 +21,7 @@ const Register = () => {
         password: "",
         category: category[0]
     });
+    const [loading, setLoading] = useState(false);
 
     const handleInput = (e) => {
         const name = e.target.name;
@@ -34,6 +36,7 @@ const Register = () => {
             alert('Please fill all the fields');
             return;
         }
+        setLoading(true);
         const cat = userInput.category == 'Donator' ? 0 : 1;
         const name = userInput.userfirstname + " "+ userInput.userlastname;
         try{
@@ -47,6 +50,7 @@ const Register = () => {
                 category: cat
             });
             console.log(response);
+            setLoading(false);
             if(response.status == 200){
                 alert(response.data.message);
                 navigate("/login");
@@ -58,12 +62,14 @@ const Register = () => {
         }
         catch(err){
             console.log(err);
+            setLoading(false);
             alert(err.response.data.message);
         }
     }
 
     return(
         <>
+        {loading && <Spinner/>}
             <div class="wrapper">
         <div class="form-container">
             <div class="form">

@@ -15,6 +15,7 @@ import DeliveryForm from "./components/Agent/AgentForm/DeliveryForm";
 import Register from "./components/Auth/Register";
 import Login from "./components/Auth/Login";
 import AuthContext from "./store/context/auth";
+import Spinner from "./components/Utility/Spinner";
 import axios from "./axios";
 
 const App = (props) => {
@@ -36,6 +37,7 @@ const App = (props) => {
           <Route path="/adminDashboard" element={<AdminDashboard />} />
           <Route path="/pickUpForm" element={<PickUpForm />} />
           <Route path="/deliveryForm" element={<DeliveryForm />} />
+          <Route path="/spinner" element={<Spinner/>} />
           <Route path="/" element={<Navigate replace to="/home" />} />
         </Routes>
     );

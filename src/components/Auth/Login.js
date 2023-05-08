@@ -4,6 +4,7 @@ import axios from '../../axios';
 import authContext from '../../store/context/auth';
 import * as actions from '../../store/actions/auth';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../Utility/Spinner';
 
 const Login = () => {
 
@@ -15,6 +16,7 @@ const Login = () => {
         password: "",
         category: category[0]
     });
+    const [loading, setLoading] = useState(false);
 
     const handleInput = (e) => {
         const name = e.target.name;
@@ -26,6 +28,7 @@ const Login = () => {
         const data = {name: userInput.email, password: userInput.password};
         try{
             const response = await axios.post("/admin/adlogin",data);
+            setLoading(false);
             if(response.status == 200){
                 console.log(response);
                 localStorage.setItem('auth', true);
@@ -39,6 +42,7 @@ const Login = () => {
         }
         catch(err){
             console.log(err);
+            setLoading(false);
             dispatch(actions.authFail(err.response.data.message));
             alert(err.response.data.message);
         }
@@ -46,6 +50,7 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setLoading(true);
         if(userInput.category=='Admin'){
             return handleAdminLogin();
         }
@@ -54,6 +59,7 @@ const Login = () => {
         try{
             const data = {email: userInput.email, password: userInput.password, category: cat};
             const response = await axios.post("/auth/login",data);
+            setLoading(false);
             if(response.status == 200){
                 console.log(response);
                 localStorage.setItem('auth', true);
@@ -67,6 +73,7 @@ const Login = () => {
         }
         catch(err){
             console.log(err);
+            setLoading(false);
             dispatch(actions.authFail(err.response.data.message));
             alert(err.response.data.message);
         }
@@ -74,6 +81,7 @@ const Login = () => {
 
     return(
         <>
+        {loading && <Spinner/>}
             <div class="wrapper">
         <div class="form-container">
             <div class="form">

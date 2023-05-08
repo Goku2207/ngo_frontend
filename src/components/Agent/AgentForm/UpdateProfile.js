@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './AgentForm.css';
 import axios from '../../../axios';
+import Spinner from '../../Utility/Spinner';
 
 const UpdateProfileForm = (props) => {
 
@@ -9,6 +10,7 @@ const UpdateProfileForm = (props) => {
         email:"",
         mobile:""
     });
+    const [loading, setLoading] = useState(false);
 
     const handleInput = (e) => {
         //e.preventDefault();
@@ -21,7 +23,13 @@ const UpdateProfileForm = (props) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if(userInput.email=="" && userInput.mobile==""){
+            alert('At least update any 1 field!');
+            return;
+        }
+        setLoading(true);
         const response = await axios.post('/collector/updateProfile',userInput);
+        setLoading(false);
         props.setType("");
         if(response.status == 200){
             props.setDisplayDashboard(true);
@@ -33,6 +41,7 @@ const UpdateProfileForm = (props) => {
 
     return(
         <>
+        {loading && <Spinner/>}
             <div class="wrapper">
         <div class="form-container">
             <div class="form">

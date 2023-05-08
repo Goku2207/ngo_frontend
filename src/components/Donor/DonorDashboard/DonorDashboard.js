@@ -11,6 +11,7 @@ import DonorForm from '../DonorForm/DonorForm';
 import { logout } from '../../Auth/Utility';
 import AuthContext from '../../../store/context/auth';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../../Utility/Spinner';
 
 const DonorDashboard = () => {
 
@@ -22,9 +23,11 @@ const DonorDashboard = () => {
     const [displayDashboard, setDisplayDashboard] = useState(true);
     const [donatorID,setDonatorID] = useState(localStorage.getItem('user'));
     const [stats, setStats] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(async () => {
+            setLoading(true);
             const response = await axios.get('/donator/size');
             setStats(response.data.sizes);
             const resDonator = await axios.post('/donator/get',{donatorID: donatorID});
@@ -33,19 +36,20 @@ const DonorDashboard = () => {
             const resDonatedItems = await axios.post('/donator/items',{donatorID:donatorID});
             //console.log(resDonatedItems);
             setDonatedItems(resDonatedItems.data.donatedItems);
-
+            setLoading(false);
         },500);
         return () => {clearTimeout(timer);};
     }, []);
 
     useEffect(() => {
         const timer = setTimeout(async () => {
+            setLoading(true);
             const response = await axios.get('/donator/size');
             setStats(response.data.sizes);
             const resDonatedItems = await axios.post('/donator/items',{donatorID:donatorID});
             console.log(resDonatedItems);
             setDonatedItems(resDonatedItems.data.donatedItems);
-
+            setLoading(false);
         },500);
         return () => {clearTimeout(timer);};
     }, [displayDashboard]);
@@ -138,6 +142,7 @@ const DonorDashboard = () => {
                 </div>
             </div>
             <div class="content-2">
+                {loading && <Spinner/>}
                 <div class="recent-payments">
                 <div class="title">
                     <h2>Past Dontions</h2>

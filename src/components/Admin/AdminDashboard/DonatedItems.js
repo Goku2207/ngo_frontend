@@ -1,12 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import axios from '../../../axios';
+import Spinner from "../../Utility/Spinner";
 
 const DonatedItems = (props) => {
 
+    const [loading, setLoading] = useState(false);
+
     const handlePayment = async (e,itemID) => {
         e.preventDefault();
+        setLoading(true);
         const response = await axios.post('/admin/payOff',{_id: itemID, paid:1});
         console.log(response);
+        setLoading(false);
         if(response.status == 200){
             props.setUpdateComponent(prevState=>{
                 return !prevState;
@@ -18,6 +23,8 @@ const DonatedItems = (props) => {
     }
 
     return(
+        <>
+        {loading && <Spinner/>}
         <div class="recent-payments">
                 <div class="title">
                     <h2>Donation Item Status</h2>
@@ -53,6 +60,7 @@ const DonatedItems = (props) => {
                     
                 </table>
                 </div>
+                </>
     );
 }
 

@@ -14,6 +14,7 @@ import DeliveryForm from '../AgentForm/DeliveryForm';
 import UpdateProfileForm from '../AgentForm/UpdateProfile';
 import { logout } from '../../Auth/Utility';
 import AuthContext from '../../../store/context/auth';
+import Spinner from '../../Utility/Spinner';
 
 const AgentDashboard = () => {
 
@@ -27,9 +28,11 @@ const AgentDashboard = () => {
     const [agentData, setAgentData] = useState({});
     const [tabView, setTabView] = useState("Dashboard");
     const [stats, setStats] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const timer = setTimeout(async () => {
+            setLoading(true);
             const response = await axios.get('/donator/size');
             setStats(response.data.sizes);
             const resAgent = await axios.post('/collector/get',{collectorID: collectorID});
@@ -38,17 +41,20 @@ const AgentDashboard = () => {
             const resAssigned = await axios.post('/collector/assignedItems',{collectorID: collectorID});
             //console.log(response);
             setAssignedTasks(resAssigned.data.assignedItems);
+            setLoading(false);
         },500);
         return () => {clearTimeout(timer);};
     }, []);
 
     useEffect(() => {
         const timer = setTimeout(async () => {
+            setLoading(true);
             const response = await axios.get('/donator/size');
             setStats(response.data.sizes);
             const resAssigned = await axios.post('/collector/assignedItems',{collectorID: collectorID});
             //console.log(response);
             setAssignedTasks(resAssigned.data.assignedItems);
+            setLoading(false);
         },500);
         return () => {clearTimeout(timer);};
     }, [type]);
@@ -151,6 +157,7 @@ const AgentDashboard = () => {
                 </div>
             </div>
             <div class="content-2">
+                {loading && <Spinner/>}
                 <div class="recent-payments">
                 <div class="title">
                     <h2>Pending/Completed Assignments</h2>
