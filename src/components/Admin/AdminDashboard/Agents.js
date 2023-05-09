@@ -52,6 +52,7 @@ const Agents = (props) => {
                         <th>Mobile</th>
                         <th>Email</th>
                         <th>Region</th>
+                        <th>Action</th>
                         {/* <th>Items Assigned</th> */}
                     </tr>
                     {
