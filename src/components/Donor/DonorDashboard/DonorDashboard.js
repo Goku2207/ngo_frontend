@@ -7,7 +7,6 @@ import notifs from './notifications.png';
 import info from './info.png';
 import './DonorDashboard.css';
 import axios from '../../../axios';
-import DonorForm from '../DonorForm/DonorForm';
 import { logout } from '../../Auth/Utility';
 import AuthContext from '../../../store/context/auth';
 import { useNavigate } from 'react-router-dom';
@@ -20,7 +19,6 @@ const DonorDashboard = () => {
     const [donator, setDonator] = useState({});
     const [donatedItems, setDonatedItems] = useState([]);
     const [tabView, setTabView] = useState("Dashboard");
-    const [displayDashboard, setDisplayDashboard] = useState(true);
     const [donatorID,setDonatorID] = useState(localStorage.getItem('user'));
     const [stats, setStats] = useState({});
     const [loading, setLoading] = useState(false);
@@ -41,24 +39,9 @@ const DonorDashboard = () => {
         return () => {clearTimeout(timer);};
     }, []);
 
-    useEffect(() => {
-        const timer = setTimeout(async () => {
-            setLoading(true);
-            const response = await axios.get('/donator/size');
-            setStats(response.data.sizes);
-            const resDonatedItems = await axios.post('/donator/items',{donatorID:donatorID});
-            console.log(resDonatedItems);
-            setDonatedItems(resDonatedItems.data.donatedItems);
-            setLoading(false);
-        },500);
-        return () => {clearTimeout(timer);};
-    }, [displayDashboard]);
-
     const handlePickUp = (e) => {
         e.preventDefault();
-        setDisplayDashboard(prevState=>{
-            return !prevState;
-        })
+        navigate('/donorForm', { state: { donorID: donatorID}});
     }
 
     const handleChange = (e,view) => {
@@ -73,7 +56,7 @@ const DonorDashboard = () => {
  
     const [regionCount,setRegionCount] = useState("4");
     
-    const donorDashboard = 
+    return(
         <>
             <div class="side-menu">
         <div class="brand-name">
@@ -193,13 +176,8 @@ const DonorDashboard = () => {
             </div>
         </div>
     </div>
-        </>;
-    
-    if(displayDashboard)
-        return donorDashboard;
-    else
-        return <DonorForm donorID={donatorID} setDisplayDashboard={setDisplayDashboard} />
-
+        </>
+    );
 }
 
 export default DonorDashboard;

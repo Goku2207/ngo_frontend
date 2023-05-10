@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AgentForm.css';
 import axios from '../../../axios';
 import ImageCropper from './ImageCropper';
 import Spinner from '../../Utility/Spinner';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const upload = async (file1, file2, file3, event, itemID, setType, setDisplayDashboard, setLoading) => {
+const upload = async (file1, file2, file3, event, itemID, setLoading, navigate) => {
     if(file1==null){
         alert('Please upload atleast 1 image!');
         return;
@@ -16,7 +17,6 @@ const upload = async (file1, file2, file3, event, itemID, setType, setDisplayDas
     formData.append('itemID', itemID);
     event.preventDefault();
     const response = await axios.post('/collector/itemCollect',formData);
-    await setType("");
     if(response.status == 200){
         console.log(response);
         if(file2){
@@ -32,30 +32,29 @@ const upload = async (file1, file2, file3, event, itemID, setType, setDisplayDas
             const response3 = await axios.post('/collector/itemCollect',formData);
         }
         setLoading(false);
-        await setDisplayDashboard(true);
         alert('Item Status Updated!');
     }
     else{
         setLoading(false);
         alert(response.message);
     }
-    
+    navigate("/agentDashboard");
 }
 
 const PickUpForm = (props) => {
 
+    const location = useLocation();
+    const navigate = useNavigate();
     const [userInput,setUserInput] = useState({
-        itemID: props.itemID,
+        itemID: location.state.itemID,
         file:null
     });
 
-    const [file, setFile] = useState(null);
     const [file1,setFile1] = useState(null);
     const [file2,setFile2] = useState(null);
     const [file3,setFile3] = useState(null);
     const [uploadCnt, setUploadCnt] = useState(0);
     const [loading, setLoading] = useState(false);
-
 
     // const handleInput = (e) => {
     //     //e.preventDefault();
@@ -108,7 +107,7 @@ const PickUpForm = (props) => {
                 <br/>
 
                 <div class="btn">
-                    <input type="submit" value="Submit Request" onClick={(event) => upload(file1, file2, file3, event, userInput.itemID, props.setType, props.setDisplayDashboard, setLoading)}/>
+                    <input type="submit" value="Submit Request" onClick={(event) => upload(file1, file2, file3, event, userInput.itemID, setLoading, navigate)}/>
                 </div>
 
             </div>

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import axios from '../../../axios';
 import Spinner from "../../Utility/Spinner";
+import { useNavigate } from "react-router-dom";
 
 const DonatedItems = (props) => {
 
+    const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
 
     const handlePayment = async (e,itemID) => {
@@ -20,6 +22,11 @@ const DonatedItems = (props) => {
         else{
             alert(response.message);
         }
+    }
+
+    const handleReport = (e, itemID) => {
+        e.preventDefault();
+        navigate("/itemReport",{state:{itemID}});
     }
 
     return(
@@ -52,6 +59,9 @@ const DonatedItems = (props) => {
                                             <a href="#" class="btn" onClick={(e)=>handlePayment(e,item._id)}>Pay</a>}
                                         {!(item.status=='Delivered')&&
                                             <a href="#" class="btn">{item.status}</a>}
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn" onClick={(e)=>handleReport(e,item._id)}>Report</a>
                                     </td>
                                 </tr> 
                             );

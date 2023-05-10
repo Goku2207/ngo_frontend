@@ -2,11 +2,15 @@ import React, { useState } from 'react';
 import './AgentForm.css';
 import axios from '../../../axios';
 import Spinner from '../../Utility/Spinner';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const DeliveryForm = (props) => {
 
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const [userInput,setUserInput] = useState({
-        itemID: props.itemID,
+        itemID: location.state.itemID,
         name:"",
         aadhar:"",
         mobile:"",
@@ -32,13 +36,13 @@ const DeliveryForm = (props) => {
         setLoading(true);
         const response = await axios.post('/collector/itemDeliver',userInput);
         setLoading(false);
-        props.setType("");
         if(response.status == 200){
-            props.setDisplayDashboard(true);
+            alert('Item Status Updated!');
         }
         else{
             alert(response.message);
         }
+        navigate('/agentDashboard');
     }
 
     return(

@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AgentForm.css';
 import axios from '../../../axios';
 import Spinner from '../../Utility/Spinner';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const UpdateProfileForm = (props) => {
 
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const [userInput,setUserInput] = useState({
-        collectorID: props.collectorID,
+        collectorID: location.state.collectorID,
         email:"",
         mobile:""
     });
@@ -30,13 +34,13 @@ const UpdateProfileForm = (props) => {
         setLoading(true);
         const response = await axios.post('/collector/updateProfile',userInput);
         setLoading(false);
-        props.setType("");
         if(response.status == 200){
-            props.setDisplayDashboard(true);
+            alert('Profile Updated!');
         }
         else{
             alert(response.message);
         }
+        navigate('/agentDashboard');
     }
 
     return(

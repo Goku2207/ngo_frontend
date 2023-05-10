@@ -4,8 +4,9 @@ import ImageCropper from '../../Agent/AgentForm/ImageCropper';
 import axios from '../../../axios';
 import { Button } from 'reactstrap';
 import Spinner from '../../Utility/Spinner';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-const upload = async (file1, file2, file3, event, userInput, donorID, setDisplayDashboard, setLoading) => {
+const upload = async (file1, file2, file3, event, userInput, donorID, setLoading, navigate) => {
     console.log(donorID);
     if(userInput.itemName=="" || userInput.address==""){
         alert('Please fill all the details!');
@@ -47,13 +48,16 @@ const upload = async (file1, file2, file3, event, userInput, donorID, setDisplay
         setLoading(false);
         alert(response.data.message);
     }
-    await setDisplayDashboard(true);
+    navigate('/donorDashboard')
 }
 
 const DonorForm = (props) => {
 
     const regions = ["Region-1","Region-2","Region-3","Region-4","Region-5"];
     const category = ["Perishable Food Items","Stationary and Books","Furniture","Electronic Items","Clothes"];
+
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const [userInput,setUserInput] = useState({
         itemName:"",
@@ -161,7 +165,7 @@ const DonorForm = (props) => {
                 <br/>
 
                 <div class="btn">
-                    <input type="submit" value="Submit Request" onClick={(event) => upload(file1, file2, file3, event,userInput,props.donorID , props.setDisplayDashboard, setLoading)}/>
+                    <input type="submit" value="Submit Request" onClick={(event) => upload(file1, file2, file3, event, userInput, location.state.donorID, setLoading, navigate)}/>
                 </div>
 
             </div>
