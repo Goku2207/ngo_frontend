@@ -2,8 +2,11 @@ import React, {useState,useEffect} from "react";
 import axios from "../../../axios";
 import './AdminDashboard.css';
 import Spinner from "../../Utility/Spinner";
+import { useNavigate } from "react-router-dom";
 
 const Donors = (props) => {
+
+    const navigate = useNavigate();
 
     const [donorsData, setDonorsData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -17,6 +20,11 @@ const Donors = (props) => {
         },500);
         return () => {clearTimeout(timer);};
     }, []);
+
+    const handleHistory = (e, donor) => {
+        e.preventDefault();
+        navigate('/history',{ state: {id: donor._id, name: donor.name, email: donor.email, type: 'donor' }});
+    }
 
     return(
         <>
@@ -42,6 +50,9 @@ const Donors = (props) => {
                                     <td>{donor.email}</td>
                                     {/* <td>{donor.region}</td> */}
                                     <td>{donor.items.length}</td>
+                                    <td>
+                                        <a href="#" class="btn" onClick={(e)=>handleHistory(e,donor)}>History</a>
+                                    </td>
                                 </tr> 
                             );
                         })

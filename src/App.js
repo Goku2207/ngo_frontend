@@ -18,6 +18,7 @@ import AuthContext from "./store/context/auth";
 import ItemReport from "./components/Report/ItemReport";
 import axios from "./axios";
 import UpdateProfileForm from "./components/Agent/AgentForm/UpdateProfile";
+import DonorHistory from "./components/Report/DonorHistory";
 
 const App = (props) => {
 
@@ -40,6 +41,7 @@ const App = (props) => {
           <Route path="/deliveryForm" element={<DeliveryForm />} />
           <Route path="/updateProfile" element={<UpdateProfileForm />} />
           <Route path="/itemReport" element={<ItemReport/>} />
+          <Route path="/history" element={<DonorHistory />} />
           <Route path="/" element={<Navigate replace to="/home" />} />
         </Routes>
     );

@@ -34,6 +34,20 @@ h3{
     text-align: center;
 }
 
+.btn-agent{
+    background-color: #f05462;
+    color: white;
+    padding: 4px 8px;
+    text-align: center;
+}
+
+.btn-agent:hover{
+    color: #f05462;
+    background-color: white;
+    padding: 3px 5px;
+    border: 2px solid #f05462;
+}
+
 .btn:hover{
     color: #f05462;
     background-color: white;

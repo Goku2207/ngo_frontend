@@ -2,8 +2,11 @@ import React, {useState,useEffect} from "react";
 import axios from "../../../axios";
 import './AdminDashboard.css';
 import Spinner from "../../Utility/Spinner";
+import { useNavigate } from "react-router-dom";
 
 const Agents = (props) => {
+
+    const navigate = useNavigate();
 
     const [agentsData, setAgentsData] = useState([]);
     const [refresh, setRefresh] = useState(false);
@@ -38,6 +41,11 @@ const Agents = (props) => {
         }
     }
 
+    const handleHistory = (e, agent) => {
+        e.preventDefault();
+        navigate('/history',{ state: {id: agent._id, name: agent.name, email: agent.email, type: 'agent' }});
+    }
+
     return(
         <>
         {loading && <Spinner/>}
@@ -65,7 +73,12 @@ const Agents = (props) => {
                                     <td>{agent.email}</td>
                                     <td>{agent.region}</td>
                                     {/* <td>{agent.items.length}</td> */}
-                                    <td><a href="#" class="btn" onClick={(e)=>handleRemove(e,agent._id)}>Remove</a></td>
+                                    <td>
+                                        <a href="#" class="btn-agent" onClick={(e)=>handleRemove(e,agent._id)}>Remove</a>
+                                    </td>
+                                    <td>
+                                        <a href="#" class="btn-agent" onClick={(e)=>handleHistory(e,agent)}>History</a>
+                                    </td>
                                 </tr> 
                             );
                         })
