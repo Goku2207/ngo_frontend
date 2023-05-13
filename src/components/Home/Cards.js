@@ -1,46 +1,47 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './Cards.css';
 import CardItem from './CardItem';
+import axios from '../../axios';
 
-function Cards() {
+const Cards = () => {
+
+  const [topThree, setTopThree] = useState([]);
+
+  useEffect(() => {
+    const timer = setTimeout(async () => {
+            try{
+                const response = await axios.get('/donator/topThree');
+                //console.log(response);
+                if(response.status == 200){
+                    setTopThree(response.data.topThree);
+                }
+            }
+            catch(err){
+                console.log(err);
+            }
+        },500);
+        return () => {clearTimeout(timer);};
+    }, []);
+
   return (
     <div className='cards'>
       <h1>Top Contributors!</h1>
       <div className='cards__container'>
         <div className='cards__wrapper'>
-          {/* <ul className='cards__items'>
-            <CardItem
-              src=''
-              text='Mr. Singh - No. of donations : 90'
-              label='Donor1'
-              path='/sign-up'
-            />
-            <CardItem
-              src=''
-              text='Mrs. Sharma - No. of donations : 70'
-              label='Donor2'
-              path='/sign-up'
-            />
-          </ul> */}
           <ul className='cards__items'>
-            <CardItem
-              src=''
-              text='Mr. Kumar - No. of donations : 50'
-              label='Donor3'
-              path='/sign-up'
-            />
-            <CardItem
-              src=''
-              text='Mr. Tripathi - No. of donations : 40'
-              label='Donor4'
-              path='/sign-up'
-            />
-            <CardItem
-              src=''
-              text='Mrs. Prasad - No. of donations : 30'
-              label='Donor5'
-              path='/sign-up'
-            />
+            {
+                topThree.map((donor)=>{
+                  const text = donor.name + ' - No. of donations : ' + donor.cnt;
+                  
+                  return(
+                    <CardItem
+                      text={text}
+                      label='Donor'
+                      path='/sign-up'
+                    />
+                  );
+                })
+            }
           </ul>
         </div>
       </div>

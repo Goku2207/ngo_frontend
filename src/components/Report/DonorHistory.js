@@ -63,7 +63,9 @@ const DonorHistory = (props) => {
                                     return(
                                         <tr>
                                             <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <a href={item.url[0]} target="_blank">
                                                 <img src={item.url[0]} height="100px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                </a>
                                             </td>
                                             <td>{item.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                             <td>{item.region}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>

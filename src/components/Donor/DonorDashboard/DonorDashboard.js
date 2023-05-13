@@ -144,7 +144,11 @@ const DonorDashboard = () => {
                         donatedItems.map((items)=>{
                             return(
                                 <tr>
-                                    <td><img src={items.url[0]} height="100px" /></td>
+                                    <td>
+                                        <a href={items.url[0]} target="_blank">
+                                        <img src={items.url[0]} height="100px" />
+                                        </a>
+                                    </td>
                                     <td>{items.name}</td>
                                     <td>{items.region}</td>
                                     <td>{items.category}</td>

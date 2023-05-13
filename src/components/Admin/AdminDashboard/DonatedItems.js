@@ -50,7 +50,7 @@ const DonatedItems = (props) => {
                         props.donatedItems.map((item)=>{
                             return(
                                 <tr key={item._id}>
-                                    <td><img src={item.url[0]} height="100px" /></td>
+                                    <td><a href={item.url[0]} target="_blank"><img src={item.url[0]} height="100px" /></a></td>
                                     <td>{item.name}</td>
                                     <td>{item.region}</td>
                                     <td>{item.category}</td>

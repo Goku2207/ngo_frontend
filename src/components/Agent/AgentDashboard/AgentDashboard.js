@@ -11,6 +11,8 @@ import axios from '../../../axios';
 import { logout } from '../../Auth/Utility';
 import AuthContext from '../../../store/context/auth';
 import Spinner from '../../Utility/Spinner';
+import DashboardView from './DashboardView';
+import UndeliveredItems from './UndeliveredItems';
 
 const AgentDashboard = () => {
 
@@ -39,20 +41,6 @@ const AgentDashboard = () => {
         return () => {clearTimeout(timer);};
     }, []);
 
-    const handleAgentForm = (e,task,status) => {
-       e.preventDefault();
-       console.log(task);
-       if(status == 'Pick Up'){
-            navigate('/PickUpForm',{ state: { itemID:task._id }});
-       }
-       else if(status == 'Mend'){
-            navigate('/agentForm',{ state: { itemID:task._id }});
-       }
-       else if(status == 'Deliver'){
-            navigate('/deliveryForm', { state: { itemID:task._id }});
-       }
-    }
-
     const handleUpdateProfile = (e) => {
         e.preventDefault();
         console.log(collectorID);
@@ -62,6 +50,11 @@ const AgentDashboard = () => {
     const handleChange = (e,view) => {
         e.preventDefault();
         setTabView(view);
+    }
+
+    const handleUndeliveredItems = (e) => {
+        e.preventDefault();
+        setTabView('Undelivered');
     }
 
     const handleLogout = (event) => {
@@ -79,7 +72,8 @@ const AgentDashboard = () => {
         </div>
         <ul>
             <a href="#" onClick={(e)=>handleChange(e,'Dashboard')}><li className={tabView=='Dashboard'?'highlight':''}><img src={img1} alt=""/>&nbsp; <span>Dashboard</span></li></a>
-            <a href="../AgentForm/UpdateProfile" onClick={(e)=>handleUpdateProfile(e)}> <li><img src={img1} alt=""/>&nbsp; Update Profile</li></a>
+            <a href="#" onClick={(e)=>handleUpdateProfile(e)}> <li><img src={img1} alt=""/>&nbsp; Update Profile</li></a>
+            <a href="#" onClick={(e)=>handleUndeliveredItems(e)}> <li className={tabView=='Undelivered'?'highlight':''}><img src={img1} alt=""/>&nbsp; Undelivered Items</li></a>
         </ul>
     </div>
     <div class="container">
@@ -139,57 +133,8 @@ const AgentDashboard = () => {
             </div>
             <div class="content-2">
                 {loading && <Spinner/>}
-                <div class="recent-payments">
-                <div class="title">
-                    <h2>Pending/Completed Assignments</h2>
-                </div>
-                <table>
-                    <tr>
-                        <th>Donor Name</th>
-                        <th> Donor Contact</th>
-                        <th>Item</th>
-                        <th>Category</th>
-                        <th>Region</th>
-                        <th>Action</th>
-                    </tr>
-                    {
-                        assignedTasks.map((task) => {
-                            return(
-                                <tr key={task._id}>
-                                    <td>{task.donorName}</td>
-                                    <td>{task.donorContact}</td>
-                                    <td>{task.name}</td>
-                                    <td>{task.category}</td>
-                                    <td>{task.region}</td>
-                                    <td>
-                                        {task.status=='Assigned'&&
-                                            <a href="./pickUpForm" class="btn" onClick={(e)=>handleAgentForm(e,task,"Pick Up")}>Pick Up</a>}
-                                        {task.status=='Picked Up'&&
-                                            <a href="./agentForm" class="btn" onClick={(e)=>handleAgentForm(e,task,"Mend")}>Add Charges</a>}
-                                        {(task.status=='Mended')&&
-                                            <a href="./deliveryForm" class="btn" onClick={(e)=>handleAgentForm(e,task,"Deliver")}>Deliver</a>}
-                                        {(task.status=='Delivered')&&
-                                            <a href="#" class="btn">Unpaid</a>}
-                                        {(task.status=='Paid')&&
-                                            <a href="#" class="btn">Paid</a>}
-                                    </td>
-                                </tr>
-                            );
-                        })
-                    }
-                </table>
-                </div>
-                {/* <div class="new-students">
-                    <div class="title">
-                        <h2>Charge settlement</h2>
-                        <a href="#" class="btn">Form</a>
-                    </div>
-                    <table>
-                        <tr>
-                        <td>Form for overhead charges of completed pickups</td>                           
-                        </tr>
-                    </table>
-                </div> */}
+                {tabView=='Dashboard' && <DashboardView assignedTasks={assignedTasks} />}
+                {tabView=='Undelivered' && <UndeliveredItems items={assignedTasks} />}
             </div>
         </div>
     </div>

@@ -44,7 +44,7 @@ const ItemReport = (props) => {
                         {
                             item.url && item.url.map((link)=>{
                                 return(
-                                    <><img src={link} height="200px"/>&nbsp;&nbsp;&nbsp;&nbsp;</>
+                                    <a href={link} target="_blank"><img src={link} height="200px"/>&nbsp;&nbsp;&nbsp;&nbsp;</a>
                                 );
                             })
                         }
@@ -63,7 +63,7 @@ const ItemReport = (props) => {
                         {
                             item.afterMendUrl && item.afterMendUrl.map((link)=>{
                                 return(
-                                   <> <img src={link} height="200px"/>&nbsp;&nbsp;&nbsp;&nbsp;</>
+                                    <a href={link} target="_blank"><img src={link} height="200px"/>&nbsp;&nbsp;&nbsp;&nbsp;</a>
                                 );
                             })
                         }
