@@ -1,5 +1,5 @@
 .centralPage {
-    background-image: url('../../../public/images/mybg.png');
+    background-image: url('./mybg.png');
     height: 90vh;
     width: 100%;
     display: flex;

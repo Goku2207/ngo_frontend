@@ -1,6 +1,6 @@
 
   .main-container {
-    background-image: url('../../../public/images/back.png');
+    background-image: url('./back.png');
     height: 90vh;
     width: 100%;
     display: flex;
