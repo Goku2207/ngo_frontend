@@ -56,7 +56,7 @@ const DonorDashboard = () => {
  
     const [regionCount,setRegionCount] = useState("4");
     
-    return(
+    let dashboard =
         <>
             <div class="side-menu">
         <div class="brand-name">
@@ -180,8 +180,14 @@ const DonorDashboard = () => {
             </div>
         </div>
     </div>
-        </>
-    );
+        </>;
+
+    if(localStorage.getItem('type') == 'Donator'){
+        return dashboard;
+    }
+    else{
+        navigate('/home');
+    }
 }
 
 export default DonorDashboard;

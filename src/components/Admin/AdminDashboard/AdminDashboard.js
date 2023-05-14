@@ -70,7 +70,7 @@ const AdminDashboard = (props) => {
 
     const [regionCount,setRegionCount] = useState("4");
 
-    return(
+    let dashboard = 
         <>
             <div class="side-menu">
         <div class="brand-name">
@@ -176,8 +176,14 @@ const AdminDashboard = (props) => {
             </div>
         </div>
     </div>
-        </>
-    )
+        </>;
+    
+    if(localStorage.getItem('type') == 'Admin'){
+        return dashboard;
+    }
+    else{
+        navigate('/home');
+    }
 }
 
 export default AdminDashboard;

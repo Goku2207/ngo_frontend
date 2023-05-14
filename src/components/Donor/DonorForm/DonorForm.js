@@ -91,7 +91,7 @@ const DonorForm = (props) => {
         setUploadCnt(uploadCnt+1);
     }
 
-    return(
+    let donorForm =
         <>
         {loading && <Spinner/>}
             <div class="wrapper">
@@ -171,8 +171,13 @@ const DonorForm = (props) => {
             </div>
         </div>
     </div>
-        </>
-    )
+        </>;
+    if(localStorage.getItem('type') == 'Donator'){
+        return donorForm;
+    }
+    else{
+        navigate('/home');
+    }
 }
 
 export default DonorForm;

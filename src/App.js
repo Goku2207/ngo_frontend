@@ -42,7 +42,7 @@ const App = (props) => {
           <Route path="/updateProfile" element={<UpdateProfileForm />} />
           <Route path="/itemReport" element={<ItemReport/>} />
           <Route path="/history" element={<DonorHistory />} />
-          <Route path="/" element={<Navigate replace to="/home" />} />
+          <Route path="*" element={<Navigate replace to="/home" />} />
         </Routes>
     );
 }
