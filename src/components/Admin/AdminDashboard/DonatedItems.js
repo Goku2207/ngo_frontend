@@ -57,12 +57,12 @@ const DonatedItems = (props) => {
                                     <td>{item.collectorName}</td>
                                     <td>
                                         {item.status=='Delivered'&&
-                                            <a href="#" class="btn" onClick={(e)=>handlePayment(e,item._id)}>Pay</a>}
+                                            <a href="#" class="btn-agent" onClick={(e)=>handlePayment(e,item._id)}>Pay</a>}
                                         {!(item.status=='Delivered')&&
-                                            <a href="#" class="btn">{item.status}</a>}
+                                            <a href="#" class="btn-agent">{item.status}</a>}
                                     </td>
                                     <td>
-                                        <a href="#" class="btn" onClick={(e)=>handleReport(e,item._id)}>Report</a>
+                                        <a href="#" class="btn-agent" onClick={(e)=>handleReport(e,item._id)}>Report</a>
                                     </td>
                                 </tr> 
                             );

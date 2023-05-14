@@ -165,8 +165,8 @@ const AdminDashboard = (props) => {
                                     <tr>
                                         <td>{agent.name}</td>
                                         <td>{agent.region}</td>
-                                        <td><a href="#" class="btn" onClick={(e)=>handleApproval(e,agent._id,1)}>Accept</a></td>
-                                        <td><a href="#" class="btn" onClick={(e)=>handleApproval(e,agent._id,0)}>Reject</a></td>
+                                        <td><a href="#" class="btn-agent" onClick={(e)=>handleApproval(e,agent._id,1)}>Accept</a></td>
+                                        <td><a href="#" class="btn-agent" onClick={(e)=>handleApproval(e,agent._id,0)}>Reject</a></td>
                                     </tr>
                                 );
                             })

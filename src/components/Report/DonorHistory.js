@@ -38,9 +38,31 @@ const DonorHistory = (props) => {
         return () => {clearTimeout(timer);};
     }, []);
 
+    const handlePrint = (e) => {
+        e.preventDefault();
+        window.print();
+    }
+
+    window.onbeforeprint = () => {
+        document.querySelectorAll(".no-print").forEach(el => {
+          el.style.display = "none";
+        });
+      }
+      
+      window.onafterprint = () => {
+        document.querySelectorAll(".no-print").forEach(el => {
+          el.style.display = "inline-block";
+        })
+    }
+
   return (
             <div className='body'>
                 { loading && <Spinner/>}
+                <center>
+                    <div className='no-print'>
+                        <a href="#" class="btn" onClick={(e)=>handlePrint(e)}>Print Report</a>
+                    </div>
+                </center>
                 <div className='b1'>
                     <div className='block'>
                         <b>Name:</b> {location.state.name}<br/>
@@ -62,14 +84,14 @@ const DonorHistory = (props) => {
                                 items.map((item)=>{
                                     return(
                                         <tr>
-                                            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <td>
                                                 <a href={item.url[0]} target="_blank">
-                                                <img src={item.url[0]} height="100px" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                <img src={item.url[0]} height="100px" />&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </a>
                                             </td>
-                                            <td>{item.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                            <td>{item.region}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-                                            <td>{item.category}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td>{item.name}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td>{item.region}&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                            <td>{item.category}&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                             <td>{item.status}</td>
                                         </tr>
                                     );
