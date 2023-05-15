@@ -67,6 +67,7 @@ const DonorHistory = (props) => {
                     <div className='block'>
                         <b>Name:</b> {location.state.name}<br/>
                         <b>Email:</b> {location.state.email}<br/>
+                        <b>Mobile:</b> {location.state.mobile}<br/>
                     </div>
                 </div>
 

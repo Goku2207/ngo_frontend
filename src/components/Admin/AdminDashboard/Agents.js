@@ -43,7 +43,7 @@ const Agents = (props) => {
 
     const handleHistory = (e, agent) => {
         e.preventDefault();
-        navigate('/history',{ state: {id: agent._id, name: agent.name, email: agent.email, type: 'agent' }});
+        navigate('/history',{ state: {id: agent._id, name: agent.name, email: agent.email, type: 'agent', mobile: agent.mobile }});
     }
 
     return(
@@ -57,7 +57,7 @@ const Agents = (props) => {
                     <tr>
                         <th>Name</th>
                         <th>Aadhar</th>
-                        <th>Mobile</th>
+                        {/* <th>Mobile</th> */}
                         <th>Email</th>
                         <th>Region</th>
                         <th>Action</th>
@@ -69,7 +69,7 @@ const Agents = (props) => {
                                 <tr key={agent._id}>
                                     <td>{agent.name}</td>
                                     <td>{agent.aadhar}</td>
-                                    <td>{agent.mobile}</td>
+                                    {/* <td>{agent.mobile}</td> */}
                                     <td>{agent.email}</td>
                                     <td>{agent.region}</td>
                                     {/* <td>{agent.items.length}</td> */}

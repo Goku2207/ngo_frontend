@@ -23,7 +23,7 @@ const Donors = (props) => {
 
     const handleHistory = (e, donor) => {
         e.preventDefault();
-        navigate('/history',{ state: {id: donor._id, name: donor.name, email: donor.email, type: 'donor' }});
+        navigate('/history',{ state: {id: donor._id, name: donor.name, email: donor.email, type: 'donor', mobile: donor.mobile }});
     }
 
     return(

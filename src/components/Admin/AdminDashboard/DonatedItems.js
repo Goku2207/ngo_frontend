@@ -42,7 +42,7 @@ const DonatedItems = (props) => {
                         <th></th>
                         <th>Name</th>
                         <th>Region</th>
-                        <th>Category</th>
+                        {/* <th>Category</th> */}
                         <th>Agent</th>
                         <th>Status</th>
                     </tr>
@@ -53,7 +53,7 @@ const DonatedItems = (props) => {
                                     <td><a href={item.url[0]} target="_blank"><img src={item.url[0]} height="100px" /></a></td>
                                     <td>{item.name}</td>
                                     <td>{item.region}</td>
-                                    <td>{item.category}</td>
+                                    {/* <td>{item.category}</td> */}
                                     <td>{item.collectorName}</td>
                                     <td>
                                         {item.status=='Delivered'&&

@@ -156,6 +156,7 @@ const AdminDashboard = (props) => {
                     <table>
                         <tr>
                             <th>Agent</th>
+                            <th>Aadhar</th>
                             <th>Region</th>
                             {/* <th>Approve</th> */}
                         </tr>
@@ -164,6 +165,7 @@ const AdminDashboard = (props) => {
                                 return(
                                     <tr>
                                         <td>{agent.name}</td>
+                                        <td>{agent.aadhar}</td>
                                         <td>{agent.region}</td>
                                         <td><a href="#" class="btn-agent" onClick={(e)=>handleApproval(e,agent._id,1)}>Accept</a></td>
                                         <td><a href="#" class="btn-agent" onClick={(e)=>handleApproval(e,agent._id,0)}>Reject</a></td>
